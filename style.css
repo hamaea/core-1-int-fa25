@@ -45,3 +45,12 @@ body {
       color: var(--color-secondary);
       margin-bottom: 1rem;
     }
+
+    /*crane image*/
+    .crane-img {
+      
+      display: block;
+      margin: 20px auto;
+      max-width: 80%;
+      border: 0px solid red;
+    }
