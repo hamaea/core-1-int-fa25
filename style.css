@@ -54,3 +54,10 @@ body {
       max-width: 80%;
       border: 0px solid red;
     }
+
+    .cat-img {
+      display: block;
+      margin: 20px auto;
+      max-width: 80%;
+      border: 0px solid red;
+    }
