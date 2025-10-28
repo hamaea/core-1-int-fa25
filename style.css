@@ -22,6 +22,16 @@
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
+
+    /* === TYPE SIZE for random type=== */
+  --type-size-1: 12px;
+  --type-size-2: 20px;
+  --type-size-3: 30px;
+  --type-size-4: 40px;
+
+ 
+  
+
 }
 
 /* === Base === */
@@ -31,6 +41,14 @@ body {
   font-style: normal;
   color: var(--gray-800);
   background-color: var(--gray-50);
+  padding: 2rem 0 0 0;
+}
+
+.type-size-1 {
+  font-size: var(--type-size-1);
+}
+.type-size-2 {
+  font-size: var(--type-size-2);
 }
 
 /* === Typography === */
@@ -39,12 +57,9 @@ h1 {
   font-weight: 500;
   font-size: 48pt;
   letter-spacing: 5.3pt;
-  line-height: 0.3;
+  line-height: 1.2;
   color: var(--color-secondary);
-  margin-bottom: 0rem;
-  margin-left: 3rem;
-  margin-right: 3rem;
-  margin-top: 3rem;
+  margin: 0rem 3rem 0rem 3rem;
 }
 
 h2 {
@@ -53,9 +68,7 @@ h2 {
   line-height: 0.3;
   letter-spacing: 5.3pt;
   color: var(--color-secondary);
-  margin-bottom: 0rem;
-  margin-left: 2rem;
-  margin-right: 3rem;
+  margin: 1rem 3rem 1.5rem 2rem;
 }
 
 h3,
@@ -64,9 +77,7 @@ h4 {
   font-weight: 500;
   line-height: 1;
   color: var(--color-accent);
-  margin-bottom: 0rem;
-  margin-left: 2rem;
-  margin-right: 2rem;
+  margin: 0rem 2rem 0rem 2rem;
 }
 
 h5 {
@@ -76,16 +87,12 @@ h5 {
   line-height: 1;
   letter-spacing: 2.3pt;
   color: var(--color-secondary);
-  margin-bottom: 0rem;
-  margin-left: 0rem;
-  margin-right: 2rem;
+  margin: 0rem 2rem 0rem 2rem;
 }
 
 p {
   /*paragraph styling*/
-  margin-bottom: 1rem;
-  margin-left: 3rem;
-  margin-right: 3rem;
+  margin: 0rem 3rem 1rem 3rem;
 }
 
 a {
@@ -181,11 +188,19 @@ a:hover {
     transform: scale(1.12) rotate(-3deg);
   }
 
-  75% {
+  60% {
     transform: scale(1.1) rotate(3deg);
   }
 
+  70% {
+    transform: scale(1.12) rotate(-3deg);
+  }
+
+  80% {
+    transform: scale(1.08) rotate(3deg);
+  }
+
   100% {
-    transform: scale(1.12) rotate(0deg);
+    transform: scale(1.01) rotate(0deg);
   }
 }
