@@ -23,14 +23,14 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
 
-    /* === TYPE SIZE for random type=== */
+  /* === TYPE SIZE for random type=== */
   --type-size-1: 12px;
   --type-size-2: 20px;
   --type-size-3: 30px;
   --type-size-4: 40px;
 
- 
-  
+
+
 
 }
 
@@ -48,6 +48,7 @@ body {
 .type-size-1 {
   font-size: var(--type-size-1);
 }
+
 .type-size-2 {
   font-size: var(--type-size-2);
 }
@@ -208,3 +209,23 @@ a:hover {
     transform: scale(1.01) rotate(0deg);
   }
 }
+
+body {
+  overflow: hidden;
+  /* stops scrolling */
+}
+
+.float-img {
+  position: absolute;
+  width: 200px;
+  /* ✅ bigger — adjust if needed */
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+  transform-origin: center;
+}
+
+.float-img:hover {
+  transform: scale(1.1);
+}
+
