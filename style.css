@@ -45,6 +45,11 @@ body {
   letter-spacing: 0.11em;
 }
 
+/* Hide default cursor */
+body, a, img, button {
+  cursor: none;
+}
+
 .type-size-1 {
   font-size: var(--type-size-1);
 }
@@ -57,9 +62,9 @@ body {
 h1 {
   font-family: var(--font-family);
   font-weight: 500;
-  font-size: 48pt;
+  font-size: 34pt;
   letter-spacing: 5.3pt;
-  line-height: 1.2;
+  line-height: 1.0;
   color: var(--color-secondary);
   margin: 0rem 3rem 0rem 3rem;
 }
@@ -67,11 +72,11 @@ h1 {
 h2 {
   font-family: var(--font-family);
   font-weight: 500;
-  font-size: 35pt;
-  letter-spacing: 5.3pt;
-  line-height: 1.2;
+  font-size: 26pt;
+  letter-spacing: 3.3pt;
+  line-height: 0.5;
   color: var(--color-secondary);
-  margin: 1rem 3rem 1.5rem 2rem;
+  margin: 0.5rem 3rem 1.5rem 2rem;
 }
 
 h3,
@@ -127,10 +132,15 @@ a:hover {
   max-width: 50%;
 }
 
+.bunny-img {
+  max-width: 10%;
+}
 
 /* === Text Alignment Helpers === */
 .left-text {
   text-align: left;
+  max-width: 50vw;   /* text wraps after half the viewport width */
+  margin-right: auto; /* pushes the block to the right side */
 }
 
 .center-text {
@@ -139,6 +149,20 @@ a:hover {
 
 .right-text {
   text-align: right;
+  max-width: 50vw;   /* text wraps after half the viewport width */
+  margin-left: auto; /* pushes the block to the right side */
+}
+
+.focus-text {
+  position: absolute;
+  top: 70%;              /* move box to vertical center */
+  left: 50%;             /* move box to horizontal center */
+  transform: translate(-50%, -50%);  /* correct the offset */
+  
+  text-align: center;    
+  font-style: italic;
+
+  width: 80%;            /* optional: keeps text a readable width */
 }
 
 /* === Grid testing! === */
@@ -210,10 +234,71 @@ a:hover {
   }
 }
 
+#orbit-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
 .float-img {
   position: absolute;
-  width: 340px;
-  cursor: pointer;
+  width: 100px; /* adjust */
+  height: auto;
   pointer-events: auto;
-  transform-origin: center;
+  transform: translate(-50%, -50%); /* centers them correctly */
+  transform-origin: center center;
+}
+
+.bunny-img {
+  position: absolute;
+  width: 4%;
+  height: auto;
+  pointer-events: auto;
+  transform: translate(-50%, -50%); /* centers them correctly */
+  transform-origin: center center;
+}
+
+.spider-img {
+  position: fixed;
+  width: 70px;
+  height: auto;
+  pointer-events: auto;
+  transform: translate(-50%, -50%); /* centers them correctly */
+  transform-origin: center center;
+}
+
+/* ---- Custom cursor dot ---- */
+.cursor-dot {
+  position: fixed;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 1px solid #666;
+  background: rgba(0, 0, 0, 0.15); /* more opaque default cursor */
+  pointer-events: none;   /* never blocks clicks */
+  transform: translate(-50%, -50%);
+  z-index: 9999;          /* stays above images */
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+/* Cursor color when hovering an image */
+.cursor-dot.cursor--image {
+  border-color: #ff6a9e;       /* pick any color you want */
+  background: rgba(255, 106, 158, 0.12);
+}
+
+/* Cursor color when hovering TEXT */
+.cursor-dot.cursor--text {
+  border-color: #ff6a9e;         /* choose whatever color you want */
+  background: rgba(255, 106, 158, 0.12);
+}
+
+@media (pointer: coarse) {
+  /* Hide custom cursor on touch devices */
+  .cursor-dot {
+    display: none;
+  }
 }
