@@ -2,32 +2,104 @@ document.addEventListener("DOMContentLoaded", () => {
   const floatImgs = document.querySelectorAll(".float-img");
   const imgSize = 200; // must match CSS width
 
+  function isOverlapping(x, y, el) {
+    const padding = 10; // extra spacing between images
+    const left1   = x;
+    const top1    = y;
+    const right1  = x + imgSize;
+    const bottom1 = y + imgSize;
+
+    let overlap = false;
+
+    floatImgs.forEach(other => {
+      if (other === el) return;
+
+      const otherLeft   = parseFloat(other.style.left) || 0;
+      const otherTop    = parseFloat(other.style.top) || 0;
+      const otherRight  = otherLeft + imgSize;
+      const otherBottom = otherTop + imgSize;
+
+      // expand other rect by padding so they don't get too close
+      const l2 = otherLeft   - padding;
+      const r2 = otherRight  + padding;
+      const t2 = otherTop    - padding;
+      const b2 = otherBottom + padding;
+
+      const noOverlap =
+        right1 < l2 ||
+        left1  > r2 ||
+        bottom1 < t2 ||
+        top1    > b2;
+
+      if (!noOverlap) {
+        overlap = true;
+      }
+    });
+
+    return overlap;
+  }
+
   floatImgs.forEach(img => {
-    // initial placement
-    img.style.left = Math.random() * (window.innerWidth - imgSize) + "px";
-    img.style.top  = Math.random() * (window.innerHeight - imgSize) + "px";
+    // initial placement with simple overlap avoidance
+    let placed = false;
+    let attempts = 0;
+
+    while (!placed && attempts < 50) {
+      const randX = Math.random() * (window.innerWidth - imgSize);
+      const randY = Math.random() * (window.innerHeight - imgSize);
+
+      if (!isOverlapping(randX, randY, img)) {
+        img.style.left = randX + "px";
+        img.style.top  = randY + "px";
+        placed = true;
+      }
+
+      attempts++;
+    }
+
+    // fallback if we somehow failed to find a clean spot
+    if (!placed) {
+      img.style.left = Math.random() * (window.innerWidth - imgSize) + "px";
+      img.style.top  = Math.random() * (window.innerHeight - imgSize) + "px";
+    }
 
     // start drifting
     moveRandom(img);
   });
 
   function moveRandom(el) {
-    const maxX = window.innerWidth - imgSize;
-    const maxY = window.innerHeight - imgSize;
+    const maxOffset = 40; // more movement for a spacey floating feel
 
-    const toX = Math.random() * maxX;
-    const toY = Math.random() * maxY;
+    const currentLeft = parseFloat(el.style.left) || 0;
+    const currentTop  = parseFloat(el.style.top)  || 0;
 
-    // rotation between -20° and 20°
-    const rotateDeg = (Math.random() * 40 - 20).toFixed(2);
+    let clampedX = currentLeft;
+    let clampedY = currentTop;
+    let attempts = 0;
 
-    // 8–16 seconds
-    const time = 8000 + Math.random() * 8000;
+    // try a few random offsets and pick one that doesn't overlap
+    while (attempts < 10) {
+      const targetX = currentLeft + (Math.random() * 2 - 1) * maxOffset;
+      const targetY = currentTop  + (Math.random() * 2 - 1) * maxOffset;
+
+      const candidateX = Math.min(Math.max(targetX, 0), window.innerWidth - imgSize);
+      const candidateY = Math.min(Math.max(targetY, 0), window.innerHeight - imgSize);
+
+      if (!isOverlapping(candidateX, candidateY, el)) {
+        clampedX = candidateX;
+        clampedY = candidateY;
+        break;
+      }
+
+      attempts++;
+    }
+
+    const time = 8000 + Math.random() * 8000; // 8–16 seconds: noticeably floaty but not chaotic
 
     el.animate(
       [
-        { transform: el.style.transform },
-        { transform: `translate(${toX - el.offsetLeft}px, ${toY - el.offsetTop}px) rotate(${rotateDeg}deg)` }
+        { transform: "translate(0, 0)" },
+        { transform: `translate(${clampedX - currentLeft}px, ${clampedY - currentTop}px)` }
       ],
       {
         duration: time,
@@ -35,10 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
         fill: "forwards"
       }
     ).onfinish = () => {
-      // permanently move to new position
-      el.style.left = toX + "px";
-      el.style.top = toY + "px";
-      el.style.transform = `rotate(${rotateDeg}deg)`;
+      // permanently move to new position using left/top only
+      el.style.left = clampedX + "px";
+      el.style.top  = clampedY + "px";
+      el.style.transform = "none";
       moveRandom(el);
     };
   }
@@ -53,161 +125,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-
-
-// Theme Toggle
-const themeToggle = document.getElementById('theme-toggle');
-const themeIcon = themeToggle.querySelector('.theme-icon');
-const body = document.body;
-//hai
-// Get saved theme or default to light
-const savedTheme = localStorage.getItem('theme') || 'light';
-body.setAttribute('data-theme', savedTheme);
-updateThemeIcon(savedTheme);
-
-themeToggle.addEventListener('click', function () {
-    const currentTheme = body.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-    body.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    updateThemeIcon(newTheme);
-});
-
-function updateThemeIcon(theme) {
-    themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
-    themeToggle.setAttribute('aria-label', `Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`);
-}
-
-// Clap Button Animation
-const clapButton = document.querySelector('.clap-button');
-const clapCount = document.querySelector('.clap-count');
-let currentClaps = parseInt(clapCount.textContent) || 0;
-
-clapButton.addEventListener('click', function () {
-    currentClaps++;
-    clapCount.textContent = currentClaps;
-
-    // Add animation class
-    clapButton.style.transform = 'scale(1.1)';
-
-    // Reset animation
-    setTimeout(() => {
-        clapButton.style.transform = 'scale(1)';
-    }, 150);
-
-    // Save claps to localStorage
-    localStorage.setItem('article-claps', currentClaps);
-
-    // Create floating clap animation
-    createClapAnimation();
-});
-
-// Load saved claps
-const savedClaps = localStorage.getItem('article-claps');
-if (savedClaps) {
-    currentClaps = parseInt(savedClaps);
-    clapCount.textContent = currentClaps;
-}
-
-function createClapAnimation() {
-    const clapEmoji = document.createElement('div');
-    clapEmoji.textContent = '👏';
-    clapEmoji.style.cssText = `
-            position: fixed;
-            pointer-events: none;
-            font-size: 1.5rem;
-            z-index: 1000;
-            animation: clapFloat 1s ease-out forwards;
-        `;
-
-    const rect = clapButton.getBoundingClientRect();
-    clapEmoji.style.left = rect.left + rect.width / 2 + 'px';
-    clapEmoji.style.top = rect.top + 'px';
-
-    document.body.appendChild(clapEmoji);
-
-    setTimeout(() => {
-        clapEmoji.remove();
-    }, 1000);
-}
-
-// Add CSS for clap animation
-const style = document.createElement('style');
-style.textContent = `
-        @keyframes clapFloat {
-            0% { 
-                transform: translateY(0) scale(1); 
-                opacity: 1; 
-            }
-            100% { 
-                transform: translateY(-50px) scale(1.2); 
-                opacity: 0; 
-            }
-        }
-    `;
-document.head.appendChild(style);
-
-// Reading Progress Indicator
-function updateReadingProgress() {
-    const article = document.querySelector('.article-content');
-    const scrolled = window.scrollY;
-    const articleTop = article.offsetTop;
-    const articleHeight = article.offsetHeight;
-    const windowHeight = window.innerHeight;
-
-    const progress = Math.max(0, Math.min(1,
-        (scrolled - articleTop + windowHeight * 0.1) / (articleHeight - windowHeight * 0.2)
-    ));
-
-    // Update a CSS custom property for potential progress bar
-    document.documentElement.style.setProperty('--reading-progress', progress);
-}
-
-window.addEventListener('scroll', updateReadingProgress);
-updateReadingProgress();
-
-// Smooth tag interactions
-document.querySelectorAll('.tag').forEach(tag => {
-    tag.addEventListener('mouseenter', function () {
-        this.style.transform = 'translateY(-2px)';
-    });
-
-    tag.addEventListener('mouseleave', function () {
-        this.style.transform = 'translateY(0)';
-    });
-});
-
-// Console messages for developers
-console.log('📖 Medium-style Article Template');
-console.log('Current theme:', savedTheme);
-console.log('Article claps:', currentClaps);
-console.log('');
-console.log('This template features:');
-console.log('- Clean, Medium-inspired design');
-console.log('- Dark/light theme switching');
-console.log('- Interactive clap button');
-console.log('- Responsive typography');
-console.log('- Accessible navigation');
-console.log('- Smooth animations');
-
-// Export utility functions
-window.mediumTemplate = {
-    resetClaps: function () {
-        localStorage.removeItem('article-claps');
-        document.querySelector('.clap-count').textContent = '47';
-        console.log('Clap count reset');
-    },
-
-    getTheme: function () {
-        return document.body.getAttribute('data-theme');
-    },
-
-    setTheme: function (theme) {
-        if (['light', 'dark'].includes(theme)) {
-            document.body.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-            console.log(`Theme set to: ${theme}`);
-        }
-    }
-};

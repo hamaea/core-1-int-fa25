@@ -210,37 +210,10 @@ a:hover {
   }
 }
 
-body {
-  overflow: hidden;
-  /* stops scrolling */
-}
-
 .float-img {
   position: absolute;
-  width: 200px;
-  /* decorative floating images */
-  pointer-events: none;            /* don’t block text / links */
-  cursor: default;
-  transition: transform 0.2s;
+  width: 340px;
+  cursor: pointer;
+  pointer-events: auto;
   transform-origin: center;
-  animation: gentle-glide 90s ease-in-out infinite alternate; /* very slow */
-  z-index: -1;                     /* sit behind text content */
-}
-
-@keyframes gentle-glide {
-  0% {
-    transform: translate(0px, 0px);
-  }
-  25% {
-    transform: translate(2px, -1px);
-  }
-  50% {
-    transform: translate(1px, 2px);
-  }
-  75% {
-    transform: translate(-2px, 1px);
-  }
-  100% {
-    transform: translate(-1px, -2px);
-  }
 }
