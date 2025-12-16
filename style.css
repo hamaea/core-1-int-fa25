@@ -425,6 +425,52 @@ a:hover {
   padding: 1rem;
 }
 
+/* === Two-column step grid (entry 4 – leaf) === */
+.two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin: 3rem 2rem;
+  align-items: start;
+}
+
+.two-col-grid .step {
+  display: block;
+}
+
+.two-col-grid h3 {
+  margin: 0;
+  line-height: 1;
+}
+
+.two-col-grid p {
+  margin: 0.5rem 0 0 0;
+  max-width: 38ch;
+}
+
+.two-col-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 0.75rem;
+}
+
+/* Mobile / tablet */
+@media (max-width: 900px) {
+  .two-col-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .two-col-grid p {
+    max-width: none;
+  }
+}
+
+.two-col-grid img.leaf-step-img {
+  width: 10rem;
+  height: auto;
+}
+
 .grid-item {
   background-color: var(--gray-100);
   border: 0px solid var(--gray-300);
@@ -498,11 +544,16 @@ a:hover {
 
 .float-img {
   position: absolute;
-  width: 100px; /* adjust */
+  width: 120px; /* adjust */
   height: auto;
   pointer-events: auto;
   transform: translate(-50%, -50%); /* centers them correctly */
   transform-origin: center center;
+}
+
+.leaf-step-img {
+  width: 10rem;
+  pointer-events: auto;
 }
 
 .bunny-img {
@@ -529,6 +580,8 @@ a:hover {
   transform: translate(-50%, -50%); /* centers them correctly */
   transform-origin: center center;
 }
+
+
 
 /* ---- Custom cursor dot ---- */
 .cursor-dot {
