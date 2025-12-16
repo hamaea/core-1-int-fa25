@@ -86,7 +86,7 @@ h4 {
   font-weight: 500;
   line-height: 1;
   color: var(--color-secondary);
-  margin: 2rem 2rem 0.5rem 2rem;
+  margin: 4rem 2rem 0.5rem 2rem;
 }
 
 h5 {
@@ -128,12 +128,174 @@ a:hover {
   border: 0;
 }
 
+.elephant-img {
+  display: block;
+  margin: 20px auto;
+  max-width: 20%;
+  border: 0;
+}
+
 .butterfly-img {
   max-width: 50%;
 }
 
 .bunny-img {
   max-width: 10%;
+}
+
+/* === Make ninja grid match spider grid === */
+
+.ninja-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.25rem;
+  margin: 4rem 2rem 2rem 2rem;
+  align-items: start;
+}
+
+/* typography + spacing */
+.ninja-grid h3 {
+  margin: 0;
+  line-height: 1;
+}
+
+.ninja-grid p {
+  margin: 0.35rem 0 0 0;
+  max-width: 42ch;
+}
+
+/* images: normal colors, responsive */
+.ninja-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 0.75rem;
+  filter: none; /* IMPORTANT: no inversion */
+}
+
+/* reuse spider step placement logic */
+.ninja-grid .step--wide-left {
+  grid-column: 1 / span 2;
+}
+
+.ninja-grid .step--narrow-right {
+  grid-column: 3 / span 1;
+}
+
+.ninja-grid .step--wide-right {
+  grid-column: 2 / span 2;
+}
+
+.ninja-grid .step--narrow-left {
+  grid-column: 1 / span 1;
+}
+
+.ninja-grid .note {
+  grid-column: 1 / -1;
+}
+
+/* tablet */
+@media (max-width: 900px) {
+  .ninja-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ninja-grid .step,
+  .ninja-grid .note {
+    grid-column: auto;
+  }
+
+  .ninja-grid .step--wide-left,
+  .ninja-grid .step--wide-right {
+    grid-column: 1 / span 2;
+  }
+
+  .ninja-grid .note {
+    grid-column: 1 / -1;
+  }
+}
+/* === Rabbit editorial grid === */
+.rabbit-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 2.5rem;
+  margin: 4rem 2rem;
+  align-items: start;
+}
+
+.rabbit-grid h3 {
+  margin: 0;
+  line-height: 1;
+}
+
+.rabbit-grid p {
+  margin: 0.4rem 0 0 0;
+  max-width: 40ch;
+}
+
+.rabbit-grid .note {
+  grid-column: 1 / -1;
+}
+
+/* placement styles */
+.step {
+  grid-column: span 2;
+}
+
+.r-wide {
+  grid-column: 2 / span 4;
+}
+
+.r-left {
+  grid-column: 1 / span 2;
+}
+
+.r-right {
+  grid-column: 5 / span 2;
+}
+
+.r-tall {
+  grid-column: 3 / span 2;
+}
+
+/* tablet */
+@media (max-width: 900px) {
+  .rabbit-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .step,
+  .r-wide,
+  .r-left,
+  .r-right,
+  .r-tall {
+    grid-column: auto;
+  }
+
+  .rabbit-grid p {
+    max-width: 52ch;
+  }
+}
+
+/* mobile */
+@media (max-width: 600px) {
+  .rabbit-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rabbit-grid p {
+    max-width: none;
+  }
+}
+/* mobile */
+@media (max-width: 600px) {
+  .ninja-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ninja-grid p {
+    max-width: none;
+  }
 }
 
 /* === Text Alignment Helpers === */
@@ -165,6 +327,93 @@ a:hover {
   width: 80%;            /* optional: keeps text a readable width */
 }
 
+/* === Modern staggered steps grid === */
+.h3-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2.25rem;
+  margin: 4rem 2rem 2rem 2rem;
+  align-items: start;
+}
+
+/* override your global h3/p margins ONLY inside the grid */
+.h3-grid h3 {
+  margin: 0;
+  line-height: 1;
+}
+
+.h3-grid p {
+  margin: 0.35rem 0 0 0;
+  max-width: 42ch;
+}
+
+/* each step is ONE grid item */
+.step {
+  grid-column: span 1;
+}
+
+/* full-width notes like “now the head” */
+.note {
+  grid-column: 1 / -1;
+}
+
+/* explicit spans (no nth-child magic) */
+.step--wide-left {
+  grid-column: 1 / span 2;
+}
+
+.step--narrow-right {
+  grid-column: 3 / span 1;
+}
+
+.step--wide-right {
+  grid-column: 2 / span 2;
+}
+
+.step--narrow-left {
+  grid-column: 1 / span 1;
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 900px) {
+  .h3-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .step,
+  .note,
+  .step--wide-left,
+  .step--narrow-right,
+  .step--wide-right,
+  .step--narrow-left {
+    grid-column: auto;
+  }
+
+  .step--wide-left,
+  .step--wide-right {
+    grid-column: 1 / span 2;
+  }
+
+  .note {
+    grid-column: 1 / -1;
+  }
+
+  .h3-grid p {
+    max-width: 52ch;
+  }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 600px) {
+  .h3-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .h3-grid p {
+    max-width: none;
+  }
+}
+
 /* === Grid testing! === */
 .grid-container {
   display: grid;
@@ -182,6 +431,10 @@ a:hover {
   text-align: center;
   padding: 1rem;
   border-radius: 0px;
+}
+
+.invert-img {
+  filter: invert(1);
 }
 
 /* .grid-container a img {
@@ -258,6 +511,13 @@ a:hover {
   height: auto;
   pointer-events: auto;
   transform: translate(-50%, -50%); /* centers them correctly */
+  transform-origin: center center;
+}
+
+.bunny-step-img {
+  width: 15rem;
+  height: auto;
+  pointer-events: auto;
   transform-origin: center center;
 }
 
