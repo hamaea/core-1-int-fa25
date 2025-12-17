@@ -455,6 +455,12 @@ a:hover {
   margin-top: 0.75rem;
 }
 
+/* Crane page image sizing */
+.crane-page .h3-grid img {
+  max-width: 450px;
+  height: auto;
+}
+
 /* Mobile / tablet */
 @media (max-width: 900px) {
   .two-col-grid {
